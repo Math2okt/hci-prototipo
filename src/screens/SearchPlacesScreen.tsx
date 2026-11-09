@@ -1,6 +1,4 @@
-import { useRef, type FormEvent } from 'react'
 import { Chip } from '../components/Chip'
-import { Icon } from '../components/Icon'
 import { ResultCard } from '../components/ResultCard'
 import { places } from '../data/mockData'
 import { navigate } from '../lib/router'
@@ -27,21 +25,12 @@ export function SearchPlacesScreen({
   onQueryChange,
   onToggleFilter,
 }: SearchPlacesScreenProps) {
-  const resultsRef = useRef<HTMLHeadingElement>(null)
   const results = findPlaces(places, query, activeFilters)
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    resultsRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    })
-  }
 
   return (
     <div className="screen">
       <div className="screen__scroll">
-        <form className="search-form" onSubmit={handleSubmit}>
+        <div className="search-form">
           <h1 className="search-title">Quiero buscar un lugar para:</h1>
           <div className="search-field">
             <input
@@ -51,11 +40,8 @@ export function SearchPlacesScreen({
               placeholder="comprar frutas"
               aria-label="Buscar un lugar para"
             />
-            <button type="submit" aria-label="Buscar lugares">
-              <Icon name="search" size={18} />
-            </button>
           </div>
-        </form>
+        </div>
 
         <p className="filter-label">Con:</p>
         <div className="chips" aria-label="Filtros para lugares">
@@ -70,9 +56,7 @@ export function SearchPlacesScreen({
         </div>
         <p className="helper-text">Podés elegir varios filtros</p>
 
-        <h2 className="results-title" ref={resultsRef}>
-          Resultados
-        </h2>
+        <h2 className="results-title">Resultados</h2>
         <div className="results-list">
           {results.map((place) => (
             <ResultCard
